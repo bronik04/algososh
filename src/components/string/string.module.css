@@ -1,0 +1,12 @@
+.container {
+  margin: 0 auto;
+  /*width: 522px;*/
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+.input {
+ max-width: 377px;
+}
