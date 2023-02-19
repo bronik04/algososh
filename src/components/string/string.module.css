@@ -1,6 +1,5 @@
 .container {
   margin: 0 auto;
-  /*width: 522px;*/
   display: flex;
   justify-content: center;
   gap: 12px;
@@ -9,4 +8,11 @@
 
 .input {
  max-width: 377px;
+  padding-bottom: 120px;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
 }
