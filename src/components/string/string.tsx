@@ -6,7 +6,7 @@ import {Button} from "../ui/button/button";
 import {Circle} from "../ui/circle/circle";
 
 export const StringComponent: React.FC = () => {
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState<string>('');
 
     return (
         <SolutionLayout title="Строка">
