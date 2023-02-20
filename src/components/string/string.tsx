@@ -10,7 +10,7 @@ export const StringComponent: React.FC = () => {
 
     return (
         <SolutionLayout title="Строка">
-            <div className={styles.container}>
+            <form className={styles.container}>
                 <Input
                     placeholder="Введите строку"
                     extraClass={styles.input}
@@ -20,7 +20,7 @@ export const StringComponent: React.FC = () => {
                     onChange={(e: FormEvent<HTMLInputElement>) => setInputValue(e.currentTarget.value)}
                 />
                 <Button text={"Развернуть"}/>
-            </div>
+            </form>
             <ul className={styles.list}>
                 {inputValue.split('').map((char: string, index: number) =>
                     <Circle key={index} letter={char}/>)}
