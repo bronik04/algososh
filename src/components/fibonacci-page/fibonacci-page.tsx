@@ -5,7 +5,7 @@ import {Input} from "../ui/input/input";
 import {Button} from "../ui/button/button";
 import {fibonacci} from "./utils";
 import {delay} from "../../utils/delay";
-import {DELAY_IN_MS} from "../../constants/delays";
+import {SHORT_DELAY_IN_MS} from "../../constants/delays";
 import {Circle} from "../ui/circle/circle";
 
 export const FibonacciPage: React.FC = () => {
@@ -18,7 +18,7 @@ export const FibonacciPage: React.FC = () => {
 
         const numbers = fibonacci(parseInt(value));
         for (let i = 0; i < numbers.length; i++) {
-            await delay(DELAY_IN_MS);
+            await delay(SHORT_DELAY_IN_MS);
             setNumbers(numbers.slice(0, i + 1));
         }
         setActive(false);
@@ -39,16 +39,21 @@ export const FibonacciPage: React.FC = () => {
                     extraClass={styles.input}
                     isLimitText={true}
                     type={'number'}
+                    min={1}
                     max={19}
+
                 />
                 <Button
                     onClick={handleButtonClick}
                     text={"Расчитать"}
+                    disabled={isActive}
                 />
             </form>
             <ul className={styles.list}>
                 {numbers?.map((number, index) => (
-                    <Circle key={index} letter={number.toString()}/>
+                    <li key={index}>
+                        <Circle tail={index.toString()} letter={number.toString()}/>
+                    </li>
                 ))}
             </ul>
         </SolutionLayout>
