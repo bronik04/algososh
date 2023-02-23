@@ -1,0 +1,15 @@
+.form {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-right: 80px;
+}
+
+.input {
+  width: 377px;
+}
