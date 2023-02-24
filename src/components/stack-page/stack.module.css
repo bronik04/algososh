@@ -13,3 +13,11 @@
 .input {
   width: 377px;
 }
+
+.list {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}

@@ -5,11 +5,12 @@ import {Input} from "../ui/input/input";
 import {Button} from "../ui/button/button";
 import {Circle} from "../ui/circle/circle";
 import {ElementStates} from "../../types/element-states";
-import {reverseString, TLetter} from "./utils";
+import {reverseString} from "./utils";
+import {TCircleItem} from "../../types/types";
 
 export const StringComponent: React.FC = () => {
     const [inputValue, setInputValue] = useState<string>('');
-    const [array, setArray] = useState<TLetter[]>([]);
+    const [array, setArray] = useState<TCircleItem[]>([]);
     const [isActive, setActive] = useState(false);
 
     const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
@@ -44,7 +45,7 @@ export const StringComponent: React.FC = () => {
                 />
             </form>
             <ul className={styles.list}>
-                {array?.map((char: TLetter, index: number) =>
+                {array?.map((char: TCircleItem, index: number) =>
                     <li key={index}>
                         <Circle
                             letter={char.item}

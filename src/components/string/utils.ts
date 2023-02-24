@@ -3,15 +3,11 @@ import {delay} from "../../utils/delay";
 import {DELAY_IN_MS} from "../../constants/delays";
 import {swap} from "../../utils/swap";
 import React from "react";
-
-export type TLetter = {
-    item: string,
-    state: ElementStates,
-}
+import {TCircleItem} from "../../types/types";
 
 export const reverseString = async (
-    array: TLetter[],
-    setArray:  React.Dispatch<React.SetStateAction<TLetter[]>>,
+    array: TCircleItem[],
+    setArray:  React.Dispatch<React.SetStateAction<TCircleItem[]>>,
 ) => {
     const middle = Math.ceil(array.length / 2);
     for (let i = 0; i < middle; i++) {
