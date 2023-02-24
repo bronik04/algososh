@@ -29,6 +29,11 @@ export const StackPage: React.FC = () => {
         }
     }
     const handleRemoveButton = async () => {
+        stack.peak().state = ElementStates.Changing;
+        setArray([...stack.getItems()]);
+        await delay(SHORT_DELAY_IN_MS);
+        stack.pop();
+        setArray([...stack.getItems()]);
     }
     const handleClearButton = () => {
     }
@@ -45,7 +50,7 @@ export const StackPage: React.FC = () => {
                         maxLength={4}
                     />
                     <Button text="Добавить" onClick={handleAddButton}/>
-                    <Button text="Удалить"/>
+                    <Button text="Удалить" onClick={handleRemoveButton}/>
                 </div>
                 <Button type="submit" text="Очистить"/>
             </form>
