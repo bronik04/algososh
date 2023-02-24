@@ -36,6 +36,8 @@ export const StackPage: React.FC = () => {
         setArray([...stack.getItems()]);
     }
     const handleClearButton = () => {
+        stack.clear();
+        setArray([...stack.getItems()]);
     }
 
     return (
@@ -52,14 +54,19 @@ export const StackPage: React.FC = () => {
                     <Button text="Добавить" onClick={handleAddButton}/>
                     <Button text="Удалить" onClick={handleRemoveButton}/>
                 </div>
-                <Button type="submit" text="Очистить"/>
+                <Button text="Очистить" onClick={handleClearButton}/>
             </form>
             <ul className={styles.list}>
                 {array.map((item, index) => (
-                    <Circle
-                        key={index}
-                        letter={item.item}
-                        state={item.state}/>))
+                    <li key={index}>
+                        <Circle
+                            letter={item.item}
+                            state={item.state}
+                            tail={index.toString()}
+                            head={array.length - 1 === index ? 'top' : ''}
+                        />
+                    </li>
+                ))
                 }
             </ul>
         </SolutionLayout>
