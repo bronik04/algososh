@@ -107,6 +107,8 @@ export const QueuePage: React.FC = () => {
                             letter={item.item}
                             state={item.state}
                             index={index}
+                            head={index === queue.getHead() && !queue.isEmpty() ? 'head' : ''}
+                            tail={index === queue.getTail() - 1 &&!queue.isEmpty() ? 'tail' : ''}
                         />
                     </li>
                 ))
