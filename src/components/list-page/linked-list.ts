@@ -8,8 +8,8 @@ export class Node<T> {
 }
 
 interface ILinkedList<T> {
-    append: (element: T) => void;
     prepend: (element: T) => void;
+    append: (element: T) => void;
     insertAt: (element: T, position: number) => void;
     removeAt: (element: T, index: number) => void;
     getSize: () => number;

@@ -1,0 +1,28 @@
+.form {
+  display: grid;
+  justify-content: center;
+  row-gap: 38px;
+
+}
+
+.container {
+  display: flex;
+  gap: 12px;
+}
+
+.input {
+  max-width: 204px;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.btn {
+  flex: 1;
+}
