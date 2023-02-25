@@ -34,7 +34,15 @@ export const QueuePage: React.FC = () => {
         setInputValue('');
     }
 
-    const handleRemoveButton = () => {}
+    const handleRemoveButton = async () => {
+        queue.dequeue();
+        setQueue(queue);
+        array[queue.getHead() - 1] = {item: array[queue.getHead() - 1].item, state: ElementStates.Changing};
+        setArray([...array]);
+        await delay(SHORT_DELAY_IN_MS);
+        array[queue.getHead() - 1] = {item: '', state: ElementStates.Default};
+        setArray([...array]);
+    }
 
     const handleClearButton = () => {
         queue.clear();
@@ -64,6 +72,7 @@ export const QueuePage: React.FC = () => {
                     <Circle
                         letter={item.item}
                         state={item.state}
+                        index={index}
                     />
                 </li>
             ))
