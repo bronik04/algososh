@@ -35,7 +35,12 @@ export const QueuePage: React.FC = () => {
     }
 
     const handleRemoveButton = () => {}
-    const handleClearButton = () => {}
+
+    const handleClearButton = () => {
+        queue.clear();
+        setQueue(queue);
+        setArray(Array.from({length: 7}, () => ({item: '', state: ElementStates.Default})));
+    }
 
   return (
     <SolutionLayout title="Очередь">
