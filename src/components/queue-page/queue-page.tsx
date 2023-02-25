@@ -6,7 +6,7 @@ import {Button} from "../ui/button/button";
 import {Circle} from "../ui/circle/circle";
 import {Queue} from "./queue";
 import {ElementStates} from "../../types/element-states";
-import {TQueueItem} from "../../types/types";
+import {position, TQueueItem} from "../../types/types";
 import {delay} from "../../utils/delay";
 import {SHORT_DELAY_IN_MS} from "../../constants/delays";
 
@@ -107,8 +107,8 @@ export const QueuePage: React.FC = () => {
                             letter={item.item}
                             state={item.state}
                             index={index}
-                            head={index === queue.getHead() && !queue.isEmpty() ? 'head' : ''}
-                            tail={index === queue.getTail() - 1 &&!queue.isEmpty() ? 'tail' : ''}
+                            head={index === queue.getHead() && !queue.isEmpty() ? position.head : ''}
+                            tail={index === queue.getTail() - 1 &&!queue.isEmpty() ? position.tail : ''}
                         />
                     </li>
                 ))

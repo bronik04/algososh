@@ -8,3 +8,8 @@ export type TCircleItem = {
 export type TQueueItem = TCircleItem & {
     head?: string;
 }
+
+export enum position {
+    head = "head",
+    tail = "tail",
+}
