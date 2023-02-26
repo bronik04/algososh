@@ -4,7 +4,7 @@ import styles from "./stack.module.css";
 import {Input} from "../ui/input/input";
 import {Button} from "../ui/button/button";
 import {TCircleItem} from "../../types/types";
-import {Stack} from "./utils";
+import {Stack} from "./stack";
 import {ElementStates} from "../../types/element-states";
 import {delay} from "../../utils/delay";
 import {SHORT_DELAY_IN_MS} from "../../constants/delays";
