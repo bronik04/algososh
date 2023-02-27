@@ -1,3 +1,5 @@
+import {ElementStates} from "../../types/element-states";
+
 export class Node<T> {
     value: T
     next: Node<T> | null
@@ -11,7 +13,7 @@ export class Node<T> {
 interface ILinkedList<T> {
     prepend: (element: T) => void;
     append: (element: T) => void;
-    insertAt: (element: T, position: number) => void;
+    insertByIndex: (element: T, position: number) => void;
     removeByIndex: (index: number) => void;
     removeFromHead: () => void;
     removeFromTail: () => void;
@@ -20,20 +22,27 @@ interface ILinkedList<T> {
     print: () => void;
 }
 
-class LinkedList<T> implements ILinkedList<T> {
+export class LinkedList<T> implements ILinkedList<T> {
     private head: Node<T> | null;
     private tail: Node<T> | null;
     private size: number;
+    private initialArray(items: T[]) {
+        items.forEach(item => this.append(item));
+    }
 
-    constructor() {
+    constructor(items: T[]) {
         this.head = null;
         this.tail = null;
         this.size = 0;
+
+        if (items?.length) {
+            this.initialArray(items);
+        }
     }
 
     isEmpty = () => this.size === 0;
 
-    insertAt(element: T, index: number) {
+    insertByIndex(element: T, index: number) {
         if (index < 0 || index > this.size) {
             console.log('Enter a valid index');
             return;
@@ -80,7 +89,7 @@ class LinkedList<T> implements ILinkedList<T> {
     }
 
     removeFromHead() {
-        if(!this.head) return null;
+        if (!this.head) return null;
         let head = this.head;
         if (head.next) {
             this.head = head.next;
@@ -90,7 +99,7 @@ class LinkedList<T> implements ILinkedList<T> {
         this.size--;
     }
 
-    removeFromTail(){
+    removeFromTail() {
         if (!this.size) return null;
 
         let current = this.head;
@@ -127,6 +136,7 @@ class LinkedList<T> implements ILinkedList<T> {
         if (!this.head || !this.tail) {
             this.head = node;
             this.tail = node;
+            this.size++;
             return this;
         }
         this.tail.next = node;
@@ -136,6 +146,21 @@ class LinkedList<T> implements ILinkedList<T> {
 
     getSize() {
         return this.size;
+    }
+
+    getArrayWithState() {
+        const result: T[] = [];
+        let current = this.head;
+        while (current) {
+            result.push(current.value);
+            current = current.next;
+        }
+
+        return [...result].map(item => ({
+            item: item,
+            state: ElementStates.Default
+        }));
+
     }
 
     print() {
@@ -149,7 +174,3 @@ class LinkedList<T> implements ILinkedList<T> {
     }
 }
 
-const list = new LinkedList<number>();
-list.append(1);
-list.append(2);
-console.log(list)
