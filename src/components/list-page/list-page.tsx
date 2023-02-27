@@ -76,6 +76,27 @@ export const ListPage: React.FC = () => {
         setActive(false);
     }
 
+    const shift = async () => {
+
+    }
+    
+    const pop = async () => {
+      if (list.getSize) {
+          const arrayWithState = list.getArrayWithState();
+          setActive(true);
+          setIsRemoveToTail(true);
+
+          arrayWithState[arrayWithState.length - 1].item = '';
+          setArrayWithState(arrayWithState);
+          await delay(SHORT_DELAY_IN_MS);
+
+          list.pop();
+          setIsRemoveToTail(false);
+          setArrayWithState(list.getArrayWithState());
+      }
+      setActive(false);
+    }
+
     return (
         <SolutionLayout title="Связный список">
             <form className={styles.form}>
@@ -98,8 +119,16 @@ export const ListPage: React.FC = () => {
                         onClick={append}
                         disabled={isAddingToTail}
                     />
-                    <Button text="Удалить из head"/>
-                    <Button text="Удалить из tail"/>
+                    <Button
+                        text="Удалить из head"
+                        onClick={shift}
+                        disabled={isRemoveToHead}
+                    />
+                    <Button
+                        text="Удалить из tail"
+                        onClick={pop}
+                        disabled={isRemoveToTail}
+                    />
                 </div>
                 <div className={styles.container}>
                     <Input

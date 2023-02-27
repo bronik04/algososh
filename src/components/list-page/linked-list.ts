@@ -15,10 +15,9 @@ interface ILinkedList<T> {
     append: (element: T) => void;
     insertByIndex: (element: T, position: number) => void;
     removeByIndex: (index: number) => void;
-    removeFromHead: () => void;
-    removeFromTail: () => void;
+    shift: () => void;
+    pop: () => void;
     isEmpty: () => boolean;
-    getSize: () => number;
     print: () => void;
 }
 
@@ -88,7 +87,7 @@ export class LinkedList<T> implements ILinkedList<T> {
         this.size--;
     }
 
-    removeFromHead() {
+    shift() {
         if (!this.head) return null;
         let head = this.head;
         if (head.next) {
@@ -97,16 +96,17 @@ export class LinkedList<T> implements ILinkedList<T> {
             this.head = null;
         }
         this.size--;
+        return head ? head.value : null;
     }
 
-    removeFromTail() {
+    pop() {
         if (!this.size) return null;
 
         let current = this.head;
         let prev = null;
         let currentIndex = 0;
 
-        while (currentIndex < this.size && current) {
+        while (currentIndex < this.size - 1 && current) {
             prev = current;
             current = current.next;
             currentIndex++;
@@ -117,6 +117,8 @@ export class LinkedList<T> implements ILinkedList<T> {
         }
 
         this.size--;
+
+        return current ? current.value : null;
     }
 
     prepend(element: T): void {
@@ -144,7 +146,7 @@ export class LinkedList<T> implements ILinkedList<T> {
         this.size++;
     }
 
-    getSize() {
+    get getSize() {
         return this.size;
     }
 
@@ -173,4 +175,11 @@ export class LinkedList<T> implements ILinkedList<T> {
         console.log(res);
     }
 }
+
+// const list = new LinkedList<string>(['a', 'b', 'c', 'd']);
+// list.print();
+// list.pop(); //?
+// list.pop(); //?
+// list.pop(); //?
+// console.log(list)
 
