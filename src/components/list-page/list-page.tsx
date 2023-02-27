@@ -18,8 +18,8 @@ export const ListPage: React.FC = () => {
     const [isActive, setActive] = useState(false);
     const [isAddingToHead, setIsAddingToHead] = useState(false);
     const [isAddingToTail, setIsAddingToTail] = useState(false);
-    const [isRemoveToHead, setIsRemoveToHead] = useState(false);
-    const [isRemoveToTail, setIsRemoveToTail] = useState(false);
+    const [isRemoveFromHead, setIsRemoveFromHead] = useState(false);
+    const [isRemoveFromTail, setIsRemoveFromTail] = useState(false);
     const [isInsertByIndex, setIsInsertByIndex] = useState(false);
     const [isRemoveByIndex, setIsRemoveByIndex] = useState(false);
 
@@ -77,21 +77,32 @@ export const ListPage: React.FC = () => {
     }
 
     const shift = async () => {
-
+        if(list.getSize) {
+            const arrayWithState = list.getArrayWithState();
+            setActive(true);
+            setIsRemoveFromHead(true);
+            arrayWithState[0].item = '';
+            setArrayWithState(arrayWithState);
+            await delay(SHORT_DELAY_IN_MS);
+            list.shift();
+            setIsRemoveFromHead(false);
+            setArrayWithState(list.getArrayWithState());
+        }
+        setActive(false);
     }
     
     const pop = async () => {
       if (list.getSize) {
           const arrayWithState = list.getArrayWithState();
           setActive(true);
-          setIsRemoveToTail(true);
+          setIsRemoveFromTail(true);
 
           arrayWithState[arrayWithState.length - 1].item = '';
           setArrayWithState(arrayWithState);
           await delay(SHORT_DELAY_IN_MS);
 
           list.pop();
-          setIsRemoveToTail(false);
+          setIsRemoveFromTail(false);
           setArrayWithState(list.getArrayWithState());
       }
       setActive(false);
@@ -122,12 +133,12 @@ export const ListPage: React.FC = () => {
                     <Button
                         text="Удалить из head"
                         onClick={shift}
-                        disabled={isRemoveToHead}
+                        disabled={isRemoveFromHead}
                     />
                     <Button
                         text="Удалить из tail"
                         onClick={pop}
-                        disabled={isRemoveToTail}
+                        disabled={isRemoveFromTail}
                     />
                 </div>
                 <div className={styles.container}>
