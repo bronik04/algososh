@@ -7,6 +7,8 @@ import {LinkedList} from "./linked-list";
 import {TCircleItem} from "../../types/types";
 import {Circle} from "../ui/circle/circle";
 import {ElementStates} from "../../types/element-states";
+import {DELAY_IN_MS} from "../../constants/delays";
+import {delay} from "../../utils/delay";
 
 
 export const ListPage: React.FC = () => {
@@ -33,6 +35,26 @@ export const ListPage: React.FC = () => {
         setInputIdx(e.currentTarget.value);
     }
 
+    const prepend = async () => {
+        if (inputValue) {
+            setActive(true);
+            setIsAddingToHead(true);
+            await delay(DELAY_IN_MS);
+
+            list.prepend(inputValue);
+            setIsAddingToHead(false);
+            const arrayWithState = list.getArrayWithState();
+            arrayWithState[0].state = ElementStates.Modified;
+            setArrayWithState(arrayWithState);
+            await delay(DELAY_IN_MS);
+
+            arrayWithState[0].state = ElementStates.Default;
+            setArrayWithState(arrayWithState);
+        }
+        setInputValue('');
+        setActive(false);
+    }
+
     return (
         <SolutionLayout title="Связный список">
             <form className={styles.form}>
@@ -45,7 +67,10 @@ export const ListPage: React.FC = () => {
                         maxLength={4}
                         placeholder={"Введите значение"}
                     />
-                    <Button text="Добавить в head"/>
+                    <Button
+                        text="Добавить в head"
+                        onClick={prepend}
+                    />
                     <Button text="Добавить в tail"/>
                     <Button text="Удалить из head"/>
                     <Button text="Удалить из tail"/>
