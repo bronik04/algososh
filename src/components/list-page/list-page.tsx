@@ -4,11 +4,12 @@ import styles from "./list-page.module.css";
 import {Input} from "../ui/input/input";
 import {Button} from "../ui/button/button";
 import {LinkedList} from "./linked-list";
-import {TCircleItem} from "../../types/types";
+import {ElementColors, TCircleItem} from "../../types/types";
 import {Circle} from "../ui/circle/circle";
 import {ElementStates} from "../../types/element-states";
 import {DELAY_IN_MS} from "../../constants/delays";
 import {delay} from "../../utils/delay";
+import {ArrowIcon} from "../ui/icons/arrow-icon";
 
 
 export const ListPage: React.FC = () => {
@@ -88,10 +89,16 @@ export const ListPage: React.FC = () => {
 
                 <ul className={styles.list}>
                     {arrayWithState.map((item, index) => (
-                        <Circle
-                            key={index}
-                            letter={item.item}
-                            state={item.state}/>
+                        <li key={index} className={styles.list__item}>
+                            <Circle
+                                index={index}
+                                letter={item.item}
+                                state={item.state}
+                            />
+                            {arrayWithState.length - 1 !== index && (
+                                <ArrowIcon fill={ElementColors.Default}/>
+                            )}
+                        </li>
                     ))}
                 </ul>
 
