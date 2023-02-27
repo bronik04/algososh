@@ -7,7 +7,7 @@ import {LinkedList} from "./linked-list";
 import {ElementColors, TCircleItem} from "../../types/types";
 import {Circle} from "../ui/circle/circle";
 import {ElementStates} from "../../types/element-states";
-import {DELAY_IN_MS} from "../../constants/delays";
+import {DELAY_IN_MS, SHORT_DELAY_IN_MS} from "../../constants/delays";
 import {delay} from "../../utils/delay";
 import {ArrowIcon} from "../ui/icons/arrow-icon";
 
@@ -40,16 +40,36 @@ export const ListPage: React.FC = () => {
         if (inputValue) {
             setActive(true);
             setIsAddingToHead(true);
-            await delay(DELAY_IN_MS);
+            await delay(SHORT_DELAY_IN_MS);
 
             list.prepend(inputValue);
             setIsAddingToHead(false);
             const arrayWithState = list.getArrayWithState();
             arrayWithState[0].state = ElementStates.Modified;
             setArrayWithState(arrayWithState);
-            await delay(DELAY_IN_MS);
+            await delay(SHORT_DELAY_IN_MS);
 
             arrayWithState[0].state = ElementStates.Default;
+            setArrayWithState(arrayWithState);
+        }
+        setInputValue('');
+        setActive(false);
+    }
+
+    const append = async () => {
+        if (inputValue) {
+            setActive(true);
+            setIsAddingToTail(true);
+            await delay(SHORT_DELAY_IN_MS);
+
+            list.append(inputValue);
+            setIsAddingToTail(false);
+            const arrayWithState = list.getArrayWithState();
+            arrayWithState[arrayWithState.length - 1].state = ElementStates.Modified;
+            setArrayWithState(arrayWithState);
+            await delay(SHORT_DELAY_IN_MS);
+
+            arrayWithState[arrayWithState.length - 1].state = ElementStates.Default;
             setArrayWithState(arrayWithState);
         }
         setInputValue('');
@@ -71,8 +91,13 @@ export const ListPage: React.FC = () => {
                     <Button
                         text="Добавить в head"
                         onClick={prepend}
+                        disabled={isAddingToHead}
                     />
-                    <Button text="Добавить в tail"/>
+                    <Button
+                        text="Добавить в tail"
+                        onClick={append}
+                        disabled={isAddingToTail}
+                    />
                     <Button text="Удалить из head"/>
                     <Button text="Удалить из tail"/>
                 </div>
