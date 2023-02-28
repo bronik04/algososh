@@ -4,7 +4,7 @@ import styles from "./list-page.module.css";
 import {Input} from "../ui/input/input";
 import {Button} from "../ui/button/button";
 import {LinkedList} from "./linked-list";
-import {ElementColors, TCircleItem} from "../../types/types";
+import {ElementColors, position, TCircleItem} from "../../types/types";
 import {Circle} from "../ui/circle/circle";
 import {ElementStates} from "../../types/element-states";
 import {DELAY_IN_MS, SHORT_DELAY_IN_MS} from "../../constants/delays";
@@ -15,6 +15,8 @@ import {ArrowIcon} from "../ui/icons/arrow-icon";
 export const ListPage: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
     const [inputIdx, setInputIdx] = useState('');
+    const [inputValueIdx, setInputValueIdx] = useState<number>();
+
     const [isActive, setActive] = useState(false);
     const [isAddingToHead, setIsAddingToHead] = useState(false);
     const [isAddingToTail, setIsAddingToTail] = useState(false);
@@ -108,6 +110,40 @@ export const ListPage: React.FC = () => {
       setActive(false);
     }
 
+    const addByIndex = async () => {
+        const numericIdx = parseInt(inputIdx);
+        setActive(true);
+        setIsInsertByIndex(true);
+        const arrayWithState = list.getArrayWithState();
+        for (let i = 0; i < numericIdx; i++) {
+            setInputValueIdx(i);
+            await delay(SHORT_DELAY_IN_MS);
+            if (i < numericIdx) {
+                arrayWithState[i].state = ElementStates.Changing;
+                setArrayWithState(arrayWithState);
+            }
+        }
+        setIsInsertByIndex(false);
+        setInputValueIdx(parseInt(''));
+        list.insertByIndex(inputValue, numericIdx);
+        const arrayWithState2 = list.getArrayWithState();
+        arrayWithState2[numericIdx].state = ElementStates.Modified;
+
+        setArrayWithState(arrayWithState2);
+        await delay(SHORT_DELAY_IN_MS);
+        arrayWithState2[numericIdx].state = ElementStates.Default;
+        setArrayWithState(arrayWithState2);
+
+        setActive(false);
+        setInputValue('');
+        setInputIdx('');
+    }
+    const removeByIndex = async () => {
+        setActive(true);
+        setIsRemoveByIndex(true);
+        const arrayWithState = list.getArrayWithState();
+    }
+
     return (
         <SolutionLayout title="Связный список">
             <form className={styles.form}>
@@ -148,8 +184,16 @@ export const ListPage: React.FC = () => {
                         extraClass={styles.input}
                         placeholder={"Введите индекс"}
                     />
-                    <Button text="Добавить по индексу" extraClass={styles.btn}/>
-                    <Button text="Удалить по индексу" extraClass={styles.btn}/>
+                    <Button
+                        text="Добавить по индексу"
+                        extraClass={styles.btn}
+                        onClick={addByIndex}
+                    />
+                    <Button
+                        text="Удалить по индексу"
+                        extraClass={styles.btn}
+                        //onClick={}
+                    />
                 </div>
 
                 <ul className={styles.list}>
@@ -157,6 +201,8 @@ export const ListPage: React.FC = () => {
                         <li key={index} className={styles.list__item}>
                             <Circle
                                 index={index}
+                                head={index === 0 ? position.head : ''}
+                                tail={index === arrayWithState.length - 1? position.tail : ''}
                                 letter={item.item}
                                 state={item.state}
                             />
