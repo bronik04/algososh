@@ -20,13 +20,27 @@
   gap: 12px;
   list-style: none;
   margin: 0;
+  margin-top: 90px;
   padding: 0;
 }
 
 .list__item {
+  position: relative;
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.small__top {
+  position: absolute;
+  top: -100px;
+  left: 10px;
+}
+
+.small__bottom {
+  position: absolute;
+  top: 120px;
+  left: 10px;
 }
 
 .btn {

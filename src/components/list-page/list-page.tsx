@@ -7,7 +7,7 @@ import {LinkedList} from "./linked-list";
 import {ElementColors, position, TCircleItem} from "../../types/types";
 import {Circle} from "../ui/circle/circle";
 import {ElementStates} from "../../types/element-states";
-import {DELAY_IN_MS, SHORT_DELAY_IN_MS} from "../../constants/delays";
+import {SHORT_DELAY_IN_MS} from "../../constants/delays";
 import {delay} from "../../utils/delay";
 import {ArrowIcon} from "../ui/icons/arrow-icon";
 
@@ -16,7 +16,6 @@ export const ListPage: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
     const [inputIdx, setInputIdx] = useState('');
     const [inputValueIdx, setInputValueIdx] = useState<number>();
-
     const [isActive, setActive] = useState(false);
     const [isAddingToHead, setIsAddingToHead] = useState(false);
     const [isAddingToTail, setIsAddingToTail] = useState(false);
@@ -24,10 +23,11 @@ export const ListPage: React.FC = () => {
     const [isRemoveFromTail, setIsRemoveFromTail] = useState(false);
     const [isInsertByIndex, setIsInsertByIndex] = useState(false);
     const [isRemoveByIndex, setIsRemoveByIndex] = useState(false);
+    const [tempValue, setTempValue] = useState('');
 
     const initialValues = useMemo(() => ['0', '34', '8', '1'], []);
     const list = useMemo(() => new LinkedList<string>(initialValues),
-    [initialValues]);
+        [initialValues]);
     const [arrayWithState, setArrayWithState] = useState<TCircleItem[]>(list.getArrayWithState());
 
     const handleInputValChange = (e: FormEvent<HTMLInputElement>) => {
@@ -42,6 +42,7 @@ export const ListPage: React.FC = () => {
         if (inputValue) {
             setActive(true);
             setIsAddingToHead(true);
+            setInputValueIdx(0);
             await delay(SHORT_DELAY_IN_MS);
 
             list.prepend(inputValue);
@@ -62,6 +63,7 @@ export const ListPage: React.FC = () => {
         if (inputValue) {
             setActive(true);
             setIsAddingToTail(true);
+            setInputValueIdx(list.getSize - 1);
             await delay(SHORT_DELAY_IN_MS);
 
             list.append(inputValue);
@@ -79,10 +81,11 @@ export const ListPage: React.FC = () => {
     }
 
     const shift = async () => {
-        if(list.getSize) {
+        if (list.getSize) {
             const arrayWithState = list.getArrayWithState();
             setActive(true);
             setIsRemoveFromHead(true);
+            setInputValueIdx(0);
             arrayWithState[0].item = '';
             setArrayWithState(arrayWithState);
             await delay(SHORT_DELAY_IN_MS);
@@ -92,22 +95,23 @@ export const ListPage: React.FC = () => {
         }
         setActive(false);
     }
-    
+
     const pop = async () => {
-      if (list.getSize) {
-          const arrayWithState = list.getArrayWithState();
-          setActive(true);
-          setIsRemoveFromTail(true);
+        if (list.getSize) {
+            const arrayWithState = list.getArrayWithState();
+            setActive(true);
+            setIsRemoveFromTail(true);
+            setInputValueIdx(list.getSize - 1);
 
-          arrayWithState[arrayWithState.length - 1].item = '';
-          setArrayWithState(arrayWithState);
-          await delay(SHORT_DELAY_IN_MS);
+            arrayWithState[arrayWithState.length - 1].item = '';
+            setArrayWithState(arrayWithState);
+            await delay(SHORT_DELAY_IN_MS);
 
-          list.pop();
-          setIsRemoveFromTail(false);
-          setArrayWithState(list.getArrayWithState());
-      }
-      setActive(false);
+            list.pop();
+            setIsRemoveFromTail(false);
+            setArrayWithState(list.getArrayWithState());
+        }
+        setActive(false);
     }
 
     const addByIndex = async () => {
@@ -126,22 +130,40 @@ export const ListPage: React.FC = () => {
         setIsInsertByIndex(false);
         setInputValueIdx(parseInt(''));
         list.insertByIndex(inputValue, numericIdx);
-        const arrayWithState2 = list.getArrayWithState();
-        arrayWithState2[numericIdx].state = ElementStates.Modified;
+        const newArrayWithState = list.getArrayWithState();
+        newArrayWithState[numericIdx].state = ElementStates.Modified;
 
-        setArrayWithState(arrayWithState2);
+        setArrayWithState(newArrayWithState);
         await delay(SHORT_DELAY_IN_MS);
-        arrayWithState2[numericIdx].state = ElementStates.Default;
-        setArrayWithState(arrayWithState2);
+        newArrayWithState[numericIdx].state = ElementStates.Default;
+        setArrayWithState(newArrayWithState);
 
         setActive(false);
         setInputValue('');
         setInputIdx('');
     }
     const removeByIndex = async () => {
+        const numericIdx = parseInt(inputIdx);
         setActive(true);
         setIsRemoveByIndex(true);
         const arrayWithState = list.getArrayWithState();
+        for (let i = 0; i < numericIdx; i++) {
+            await delay(SHORT_DELAY_IN_MS);
+            arrayWithState[i].state = ElementStates.Changing;
+            setArrayWithState([...arrayWithState]);
+        }
+        await delay(SHORT_DELAY_IN_MS);
+        setTempValue(arrayWithState[numericIdx].item);
+        arrayWithState[numericIdx].item = '';
+        arrayWithState[numericIdx].state = ElementStates.Default;
+        setInputValueIdx(numericIdx);
+
+        await delay(SHORT_DELAY_IN_MS);
+        list.removeByIndex(numericIdx);
+        setArrayWithState(list.getArrayWithState());
+        setIsRemoveByIndex(false);
+        setActive(false);
+        setInputIdx('');
     }
 
     return (
@@ -192,17 +214,40 @@ export const ListPage: React.FC = () => {
                     <Button
                         text="Удалить по индексу"
                         extraClass={styles.btn}
-                        //onClick={}
+                        onClick={removeByIndex}
                     />
                 </div>
 
                 <ul className={styles.list}>
                     {arrayWithState.map((item, index) => (
                         <li key={index} className={styles.list__item}>
+
+                            {isActive && (isAddingToHead || isAddingToTail || isInsertByIndex)
+                                && index === inputValueIdx && (
+                                    <Circle
+                                        isSmall={true}
+                                        extraClass={styles.small__top}
+                                        letter={inputValue}
+                                        state={ElementStates.Changing}
+                                    />
+                                )}
+
+                            {isActive &&
+                                (isRemoveFromHead || isRemoveFromTail || isRemoveByIndex)
+                                && index === inputValueIdx && (
+                                    <Circle
+                                        isSmall={true}
+                                        extraClass={styles.small__bottom}
+                                        letter={tempValue}
+                                        state={ElementStates.Changing}
+                                    />
+                                )
+                            }
+
                             <Circle
                                 index={index}
                                 head={index === 0 ? position.head : ''}
-                                tail={index === arrayWithState.length - 1? position.tail : ''}
+                                tail={index === arrayWithState.length - 1 ? position.tail : ''}
                                 letter={item.item}
                                 state={item.state}
                             />
