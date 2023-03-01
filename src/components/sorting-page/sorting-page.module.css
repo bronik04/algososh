@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.container {
+  display: flex;
+  max-width: 980px;
+  margin: 0 auto 48px;
+}
+
+.container__radio {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-right: 52px;
+}
+
+.container__btn {
+  display: flex;
+  flex: 1;
+  gap: 12px;
+}
+
+.btn {
+  flex: 1;
+
+}
+
+.btn:last-child {
+  margin-left: calc(80px - 12px);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.column__container {
+  display: flex;
+  justify-content: center;
+}
