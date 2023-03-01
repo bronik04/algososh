@@ -27,3 +27,25 @@ export const bubbleSortAsc = async (
     }
     setActive(false);
 }
+
+export const bubbleSortDesc = async (
+    arr: TArrayItem[],
+    setArray: Dispatch<React.SetStateAction<TArrayItem[]>>,
+    setActive: Dispatch<SetStateAction<boolean>>) => {
+    setActive(true);
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length - i - 1; j++) {
+            arr[j].state = ElementStates.Changing;
+            arr[j + 1].state = ElementStates.Changing;
+            setArray([...arr]);
+            await delay(DELAY_IN_MS);
+            if (arr[j].item < arr[j + 1].item) {
+                swap(arr, j, j + 1);
+            }
+            arr[j].state = ElementStates.Default;
+        }
+        arr[arr.length - i - 1].state = ElementStates.Modified;
+        setArray([...arr]);
+    }
+    setActive(false);
+}
