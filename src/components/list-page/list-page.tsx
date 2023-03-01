@@ -99,6 +99,7 @@ export const ListPage: React.FC = () => {
     const pop = async () => {
         if (list.getSize) {
             const arrayWithState = list.getArrayWithState();
+            setTempValue(arrayWithState[arrayWithState.length - 1].item);
             setActive(true);
             setIsRemoveFromTail(true);
             setInputValueIdx(list.getSize - 1);
@@ -116,8 +117,11 @@ export const ListPage: React.FC = () => {
 
     const addByIndex = async () => {
         const numericIdx = parseInt(inputIdx);
+        if (numericIdx > list.getSize) return;
+
         setActive(true);
         setIsInsertByIndex(true);
+
         const arrayWithState = list.getArrayWithState();
         for (let i = 0; i < numericIdx; i++) {
             setInputValueIdx(i);
@@ -144,8 +148,9 @@ export const ListPage: React.FC = () => {
     }
     const removeByIndex = async () => {
         const numericIdx = parseInt(inputIdx);
+        if (numericIdx > list.getSize) return;
+
         setActive(true);
-        setIsRemoveByIndex(true);
         const arrayWithState = list.getArrayWithState();
         for (let i = 0; i < numericIdx; i++) {
             await delay(SHORT_DELAY_IN_MS);
@@ -155,6 +160,7 @@ export const ListPage: React.FC = () => {
         await delay(SHORT_DELAY_IN_MS);
         setTempValue(arrayWithState[numericIdx].item);
         arrayWithState[numericIdx].item = '';
+        setIsRemoveByIndex(true);
         arrayWithState[numericIdx].state = ElementStates.Default;
         setInputValueIdx(numericIdx);
 
@@ -164,6 +170,25 @@ export const ListPage: React.FC = () => {
         setIsRemoveByIndex(false);
         setActive(false);
         setInputIdx('');
+    }
+
+    const showHead = (index: number): string => {
+        if (index === 0 && (!isAddingToHead || !isInsertByIndex)) {
+            return position.head;
+        } else if (index === 0 && isInsertByIndex && inputValueIdx !== 0) {
+            return position.head;
+        }
+        return '';
+    }
+    const showTail = (index: number): string => {
+        if (index === arrayWithState.length - 1 && (!isRemoveFromTail || !isRemoveByIndex)) {
+            return position.tail;
+        } else if (index === arrayWithState.length - 1 && isRemoveByIndex) {
+            return position.tail;
+        } else if (arrayWithState.length === 1) {
+            return ''
+        }
+        return '';
     }
 
     return (
@@ -246,8 +271,8 @@ export const ListPage: React.FC = () => {
 
                             <Circle
                                 index={index}
-                                head={index === 0 ? position.head : ''}
-                                tail={index === arrayWithState.length - 1 ? position.tail : ''}
+                                head={(isAddingToHead || isInsertByIndex) ? '' : showHead(index)}
+                                tail={isRemoveFromTail || isRemoveByIndex ? '' : showTail(index)}
                                 letter={item.item}
                                 state={item.state}
                             />
