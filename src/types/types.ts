@@ -2,7 +2,12 @@ import {ElementStates} from "./element-states";
 
 export type TCircleItem = {
     item: string,
-    state: ElementStates;
+    state: ElementStates,
+}
+
+export type TArrayItem = {
+    item: number,
+    state: ElementStates,
 }
 
 export type TQueueItem = TCircleItem & {
