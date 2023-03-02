@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 450px;
 }
 
 .container {
@@ -23,21 +24,20 @@
   gap: 12px;
 }
 
-.btn {
-  flex: 1;
-
-}
-
 .btn:last-child {
   margin-left: calc(80px - 12px);
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
 }
 
 .column__container {
   display: flex;
   justify-content: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.column__container li {
+  display: flex;
+  flex-direction: column-reverse;
 }

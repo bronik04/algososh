@@ -19,6 +19,11 @@ export enum position {
     tail = "tail",
 }
 
+export enum SortName {
+    select = "выбор",
+    bubble = "пузырек"
+}
+
 export enum ElementColors {
     Default = "#0032ff",
     Changing = "#d252e1",
