@@ -15,7 +15,6 @@ export const FibonacciPage: React.FC = () => {
 
     const visualisation = async (value: string) => {
         setActive(true);
-
         const numbers = fibonacci(parseInt(value));
         for (let i = 0; i < numbers.length; i++) {
             await delay(SHORT_DELAY_IN_MS);
