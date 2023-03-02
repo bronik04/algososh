@@ -2,13 +2,16 @@ import {ElementStates} from "../../types/element-states";
 import {delay} from "../../utils/delay";
 import {DELAY_IN_MS} from "../../constants/delays";
 import {swap} from "../../utils/swap";
-import React from "react";
+import React, {SetStateAction} from "react";
 import {TCircleItem} from "../../types/types";
 
 export const reverseString = async (
     array: TCircleItem[],
     setArray:  React.Dispatch<React.SetStateAction<TCircleItem[]>>,
+    setActive: React.Dispatch<SetStateAction<boolean>>
 ) => {
+    setActive(true);
+
     const middle = Math.ceil(array.length / 2);
     for (let i = 0; i < middle; i++) {
         let j = array.length - i - 1;
@@ -23,4 +26,5 @@ export const reverseString = async (
         array[j].state = ElementStates.Modified;
         setArray([...array]);
     }
+    setActive(false);
 }

@@ -15,7 +15,7 @@ export const SortingPage: React.FC = () => {
     const [isActive, setActive] = useState(false);
     const [radioBtnValue, setRadioBtnValue] = useState<string>(SortName.select);
     const [sort, setSort] = useState<Direction>();
-
+    console.log(sort);
     useEffect(() => {
         setInitArray(randomArray());
     }, []);
@@ -30,7 +30,6 @@ export const SortingPage: React.FC = () => {
 
     const handleSortBtnClick = (value: Direction) => {
         setSort(value);
-
         if (radioBtnValue === SortName.select && sort === Direction.Ascending) {
             selectionSortAsc(initArray, setInitArray, setActive);
         }
@@ -70,16 +69,18 @@ export const SortingPage: React.FC = () => {
                         <Button
                             text={"По возрастанию"}
                             sorting={Direction.Ascending}
-                            extraClass={styles.btn}
                             onClick={() => handleSortBtnClick(Direction.Ascending)}
+                            extraClass={styles.btn}
                             disabled={isActive}
+                            isLoader={sort === Direction.Ascending && isActive}
                         />
                         <Button
                             text={"По убыванию"}
                             sorting={Direction.Descending}
-                            extraClass={styles.btn}
                             onClick={() => handleSortBtnClick(Direction.Descending)}
+                            extraClass={styles.btn}
                             disabled={isActive}
+                            isLoader={sort === Direction.Descending && isActive}
                         />
                         <Button
                             text={"Новый массив"}

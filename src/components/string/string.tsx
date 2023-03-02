@@ -5,7 +5,7 @@ import {Input} from "../ui/input/input";
 import {Button} from "../ui/button/button";
 import {Circle} from "../ui/circle/circle";
 import {ElementStates} from "../../types/element-states";
-import {reverseString} from "./utils";
+import {reverseString} from "./reverse-string";
 import {TCircleItem} from "../../types/types";
 
 export const StringComponent: React.FC = () => {
@@ -23,7 +23,7 @@ export const StringComponent: React.FC = () => {
             item,
             state: ElementStates.Default
         }));
-        reverseString(letters, setArray);
+        reverseString(letters, setArray, setActive);
         setInputValue('');
     }
 
@@ -41,7 +41,8 @@ export const StringComponent: React.FC = () => {
                 <Button
                     text={"Развернуть"}
                     onClick={handleButtonClick}
-                    disabled={isActive || !inputValue}
+                    disabled={!inputValue}
+                    isLoader={isActive}
                 />
             </form>
             <ul className={styles.list}>
