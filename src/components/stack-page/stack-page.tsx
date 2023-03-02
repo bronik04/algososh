@@ -14,6 +14,7 @@ export const StackPage: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
     const [array, setArray] = useState<TCircleItem[]>([]);
     const [stack] = useState(new Stack<TCircleItem>());
+    const [isActive, setActive] = useState(false);
 
     const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value);
@@ -51,10 +52,22 @@ export const StackPage: React.FC = () => {
                         isLimitText={true}
                         maxLength={4}
                     />
-                    <Button text="Добавить" onClick={handleAddButton}/>
-                    <Button text="Удалить" onClick={handleRemoveButton}/>
+                    <Button
+                        text="Добавить"
+                        onClick={handleAddButton}
+                        disabled={!inputValue}
+                    />
+                    <Button
+                        text="Удалить"
+                        onClick={handleRemoveButton}
+                        disabled={!array.length}
+                    />
                 </div>
-                <Button text="Очистить" onClick={handleClearButton}/>
+                <Button
+                    text="Очистить"
+                    onClick={handleClearButton}
+                    disabled={!array.length}
+                />
             </form>
             <ul className={styles.list}>
                 {array.map((item, index) => (
