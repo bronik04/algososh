@@ -58,4 +58,5 @@ export class Queue<T> implements IQueue<T> {
     getHead = () => this.head;
     getTail = () => this.tail;
     getItems = () => this.container;
+    getLength = () => this.length;
 }

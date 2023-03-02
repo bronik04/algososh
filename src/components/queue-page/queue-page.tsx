@@ -20,6 +20,9 @@ export const QueuePage: React.FC = () => {
     const [array, setArray] = useState(empty);
     const [queue, setQueue] = useState(new Queue<TQueueItem>(7));
     const [isActive, setActive] = useState(false);
+    const [isAdding, setAdding] = useState(false);
+    const [isRemoving, setRemoving] = useState(false);
+    const [isClearing, setClearing] = useState(false);
 
     const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value);
@@ -27,6 +30,7 @@ export const QueuePage: React.FC = () => {
 
     const handleAddButton = async () => {
         setActive(true);
+        setAdding(true);
         queue.enqueue({item: inputValue, state: ElementStates.Default});
         setQueue(queue);
         array[queue.getTail() - 1] = {item: '', state: ElementStates.Changing};
@@ -44,10 +48,12 @@ export const QueuePage: React.FC = () => {
         setArray([...array]);
         setInputValue('');
         setActive(false);
+        setAdding(false);
     }
 
     const handleRemoveButton = async () => {
-        setActive(true)
+        setActive(true);
+        setRemoving(true);
         queue.dequeue();
         setQueue(queue);
         array[queue.getHead() - 1] = {
@@ -58,11 +64,13 @@ export const QueuePage: React.FC = () => {
         await delay(SHORT_DELAY_IN_MS);
         array[queue.getHead() - 1] = {item: '', state: ElementStates.Default};
         setArray([...array]);
-        setActive(false)
+        setActive(false);
+        setRemoving(false);
     }
 
     const handleClearButton = () => {
-        setActive(true)
+        setActive(true);
+        setClearing(true);
         queue.clear();
         setQueue(queue);
         setArray(Array.from({length: 7}, () => ({
@@ -70,6 +78,7 @@ export const QueuePage: React.FC = () => {
             state: ElementStates.Default
         })));
         setActive(false);
+        setClearing(false);
     }
 
     return (
@@ -86,18 +95,21 @@ export const QueuePage: React.FC = () => {
                     <Button
                         text="Добавить"
                         onClick={handleAddButton}
-                        disabled={isActive}
+                        disabled={!inputValue || queue.getLength() >= 7}
+                        isLoader={isAdding}
                     />
                     <Button
                         text="Удалить"
                         onClick={handleRemoveButton}
-                        disabled={isActive}
+                        disabled={queue.isEmpty()}
+                        isLoader={isRemoving}
                     />
                 </div>
                 <Button
                     text="Очистить"
                     onClick={handleClearButton}
-                    disabled={isActive}
+                    disabled={queue.isEmpty()}
+                    isLoader={isClearing}
                 />
             </form>
             <ul className={styles.list}>
