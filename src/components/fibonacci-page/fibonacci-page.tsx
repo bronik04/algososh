@@ -3,7 +3,7 @@ import {SolutionLayout} from "../ui/solution-layout/solution-layout";
 import styles from "./fibonacci.module.css";
 import {Input} from "../ui/input/input";
 import {Button} from "../ui/button/button";
-import {fibonacci} from "./utils";
+import {fibonacci} from "./fibonacci";
 import {delay} from "../../utils/delay";
 import {SHORT_DELAY_IN_MS} from "../../constants/delays";
 import {Circle} from "../ui/circle/circle";
@@ -46,7 +46,8 @@ export const FibonacciPage: React.FC = () => {
                 <Button
                     onClick={handleButtonClick}
                     text={"Расчитать"}
-                    disabled={isActive}
+                    disabled={!inputValue}
+                    isLoader={isActive}
                 />
             </form>
             <ul className={styles.list}>
