@@ -206,22 +206,26 @@ export const ListPage: React.FC = () => {
                     <Button
                         text="Добавить в head"
                         onClick={prepend}
-                        disabled={isAddingToHead}
+                        disabled={!inputValue}
+                        isLoader={isAddingToHead}
                     />
                     <Button
                         text="Добавить в tail"
                         onClick={append}
-                        disabled={isAddingToTail}
+                        disabled={!inputValue}
+                        isLoader={isAddingToTail}
                     />
                     <Button
                         text="Удалить из head"
                         onClick={shift}
-                        disabled={isRemoveFromHead}
+                        disabled={!list.getSize}
+                        isLoader={isRemoveFromHead}
                     />
                     <Button
                         text="Удалить из tail"
                         onClick={pop}
-                        disabled={isRemoveFromTail}
+                        disabled={!list.getSize}
+                        isLoader={isRemoveFromTail}
                     />
                 </div>
                 <div className={styles.container}>
@@ -235,11 +239,15 @@ export const ListPage: React.FC = () => {
                         text="Добавить по индексу"
                         extraClass={styles.btn}
                         onClick={addByIndex}
+                        disabled={!inputIdx}
+                        isLoader={isInsertByIndex}
                     />
                     <Button
                         text="Удалить по индексу"
                         extraClass={styles.btn}
                         onClick={removeByIndex}
+                        disabled={!inputIdx}
+                        isLoader={isRemoveByIndex}
                     />
                 </div>
 

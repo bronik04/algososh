@@ -176,10 +176,3 @@ export class LinkedList<T> implements ILinkedList<T> {
     }
 }
 
-// const list = new LinkedList<string>(['a', 'b', 'c', 'd']);
-// list.print();
-// list.pop(); //?
-// list.pop(); //?
-// list.pop(); //?
-// console.log(list)
-
