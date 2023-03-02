@@ -15,7 +15,6 @@ export const SortingPage: React.FC = () => {
     const [isActive, setActive] = useState(false);
     const [radioBtnValue, setRadioBtnValue] = useState<string>(SortName.select);
     const [sort, setSort] = useState<Direction>();
-    console.log(sort);
     useEffect(() => {
         setInitArray(randomArray());
     }, []);
@@ -30,17 +29,17 @@ export const SortingPage: React.FC = () => {
 
     const handleSortBtnClick = (value: Direction) => {
         setSort(value);
-        if (radioBtnValue === SortName.select && sort === Direction.Ascending) {
-            selectionSortAsc(initArray, setInitArray, setActive);
+        if (radioBtnValue === SortName.select && value === Direction.Ascending) {
+            return selectionSortAsc(initArray, setInitArray, setActive);
         }
-        if (radioBtnValue === SortName.select && sort === Direction.Descending) {
-            selectionSortDesc(initArray, setInitArray, setActive);
+        if (radioBtnValue === SortName.select && value === Direction.Descending) {
+            return selectionSortDesc(initArray, setInitArray, setActive);
         }
-        if (radioBtnValue === SortName.bubble && sort === Direction.Ascending) {
-            bubbleSortAsc(initArray, setInitArray, setActive);
+        if (radioBtnValue === SortName.bubble && value === Direction.Ascending) {
+            return bubbleSortAsc(initArray, setInitArray, setActive);
         }
-        if (radioBtnValue === SortName.bubble && sort === Direction.Descending) {
-            bubbleSortDesc(initArray, setInitArray, setActive);
+        if (radioBtnValue === SortName.bubble && value === Direction.Descending) {
+           return  bubbleSortDesc(initArray, setInitArray, setActive);
         }
     }
 
