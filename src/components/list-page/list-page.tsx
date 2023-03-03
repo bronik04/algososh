@@ -239,14 +239,14 @@ export const ListPage: React.FC = () => {
                         text="Добавить по индексу"
                         extraClass={styles.btn}
                         onClick={addByIndex}
-                        disabled={!inputIdx}
+                        disabled={!inputIdx || parseInt(inputIdx) > list.getSize - 1}
                         isLoader={isInsertByIndex}
                     />
                     <Button
                         text="Удалить по индексу"
                         extraClass={styles.btn}
                         onClick={removeByIndex}
-                        disabled={!inputIdx}
+                        disabled={!inputIdx || parseInt(inputIdx) > list.getSize - 1}
                         isLoader={isRemoveByIndex}
                     />
                 </div>
