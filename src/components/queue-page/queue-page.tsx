@@ -28,7 +28,8 @@ export const QueuePage: React.FC = () => {
         setInputValue(e.currentTarget.value);
     }
 
-    const handleAddButton = async () => {
+    const handleAddButton = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setActive(true);
         setAdding(true);
         queue.enqueue({item: inputValue, state: ElementStates.Default});
@@ -83,7 +84,7 @@ export const QueuePage: React.FC = () => {
 
     return (
         <SolutionLayout title="Очередь">
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={handleAddButton}>
                 <div className={styles.container}>
                     <Input
                         value={inputValue}
@@ -94,21 +95,21 @@ export const QueuePage: React.FC = () => {
                     />
                     <Button
                         text="Добавить"
-                        onClick={handleAddButton}
-                        disabled={!inputValue || queue.getLength() >= 7}
+                        type={"submit"}
+                        disabled={!inputValue || isActive || queue.getLength() >= 7}
                         isLoader={isAdding}
                     />
                     <Button
                         text="Удалить"
                         onClick={handleRemoveButton}
-                        disabled={queue.isEmpty()}
+                        disabled={queue.isEmpty() || isActive}
                         isLoader={isRemoving}
                     />
                 </div>
                 <Button
                     text="Очистить"
                     onClick={handleClearButton}
-                    disabled={queue.isEmpty()}
+                    disabled={queue.isEmpty() || isActive}
                     isLoader={isClearing}
                 />
             </form>
