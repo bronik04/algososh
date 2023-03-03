@@ -14,11 +14,11 @@ export const StringComponent: React.FC = () => {
     const [isActive, setActive] = useState(false);
 
     const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
-        e.preventDefault();
         setInputValue(e.currentTarget.value)
     }
 
-    const handleButtonClick = () => {
+    const handleButtonClick = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         const letters = inputValue.split('').map(item => ({
             item,
             state: ElementStates.Default
@@ -29,7 +29,10 @@ export const StringComponent: React.FC = () => {
 
     return (
         <SolutionLayout title="Строка">
-            <form className={styles.container}>
+            <form
+                className={styles.container}
+                onSubmit={handleButtonClick}
+            >
                 <Input
                     placeholder="Введите строку"
                     extraClass={styles.input}
@@ -40,7 +43,7 @@ export const StringComponent: React.FC = () => {
                 />
                 <Button
                     text={"Развернуть"}
-                    onClick={handleButtonClick}
+                    type={"submit"}
                     disabled={!inputValue}
                     isLoader={isActive}
                 />
