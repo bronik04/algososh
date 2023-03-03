@@ -15,11 +15,18 @@ export const StackPage: React.FC = () => {
     const [array, setArray] = useState<TCircleItem[]>([]);
     const [stack] = useState(new Stack<TCircleItem>());
     const [isActive, setActive] = useState(false);
+    const [isAdding, setAdding] = useState(false);
+    const [isRemoving, setRemoving] = useState(false);
+    const [isCleaning, setCleaning] = useState(false);
 
     const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value);
     }
-    const handleAddButton = async () => {
+
+    const handleAddButton = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setActive(true);
+        setAdding(true);
         if (inputValue) {
             stack.push({item: inputValue, state: ElementStates.Changing});
             setInputValue('');
@@ -28,22 +35,34 @@ export const StackPage: React.FC = () => {
             stack.peak().state = ElementStates.Default;
             setArray([...stack.getItems()]);
         }
+        setAdding(false);
+        setActive(false);
     }
+
     const handleRemoveButton = async () => {
+        setActive(true);
+        setRemoving(true);
         stack.peak().state = ElementStates.Changing;
         setArray([...stack.getItems()]);
         await delay(SHORT_DELAY_IN_MS);
         stack.pop();
         setArray([...stack.getItems()]);
+        setActive(false);
+        setRemoving(false);
     }
-    const handleClearButton = () => {
+    const handleClearButton = async () => {
+        setActive(true);
+        setCleaning(true);
+        await delay(SHORT_DELAY_IN_MS);
         stack.clear();
         setArray([...stack.getItems()]);
+        setCleaning(false);
+        setActive(false);
     }
 
     return (
         <SolutionLayout title="Стек">
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={handleAddButton}>
                 <div className={styles.container}>
                     <Input
                         value={inputValue}
@@ -54,19 +73,22 @@ export const StackPage: React.FC = () => {
                     />
                     <Button
                         text="Добавить"
-                        onClick={handleAddButton}
-                        disabled={!inputValue}
+                        type={"submit"}
+                        disabled={!inputValue || isActive}
+                        isLoader={isAdding}
                     />
                     <Button
                         text="Удалить"
                         onClick={handleRemoveButton}
-                        disabled={!array.length}
+                        disabled={!array.length || isActive}
+                        isLoader={isRemoving}
                     />
                 </div>
                 <Button
                     text="Очистить"
                     onClick={handleClearButton}
-                    disabled={!array.length}
+                    disabled={!array.length || isActive}
+                    isLoader={isCleaning}
                 />
             </form>
             <ul className={styles.list}>
