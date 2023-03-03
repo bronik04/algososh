@@ -23,17 +23,26 @@ export const FibonacciPage: React.FC = () => {
         setActive(false);
     }
 
-    const handleButtonClick = () => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (inputValue.length !== 0) {
             visualisation(inputValue);
         }
     }
 
+    const handleInputChange = (e: FormEvent<HTMLInputElement>) =>
+        setInputValue(e.currentTarget.value);
+
+    const isDisabled = (value: string) =>
+        !value || parseInt(value) > 19 || parseInt(value) < 1;
+
     return (
         <SolutionLayout title="Последовательность Фибоначчи">
-            <form className={styles.container}>
+            <form
+                onSubmit={handleSubmit}
+                className={styles.container}>
                 <Input
-                    onChange={(e: FormEvent<HTMLInputElement>) => setInputValue(e.currentTarget.value)}
+                    onChange={handleInputChange}
                     placeholder="Введите строку"
                     extraClass={styles.input}
                     isLimitText={true}
@@ -43,16 +52,17 @@ export const FibonacciPage: React.FC = () => {
 
                 />
                 <Button
-                    onClick={handleButtonClick}
                     text={"Расчитать"}
-                    disabled={!inputValue}
+                    type={'submit'}
+                    disabled={isDisabled(inputValue)}
                     isLoader={isActive}
                 />
             </form>
             <ul className={styles.list}>
                 {numbers?.map((number, index) => (
                     <li key={index}>
-                        <Circle tail={index.toString()} letter={number.toString()}/>
+                        <Circle tail={index.toString()}
+                                letter={number.toString()}/>
                     </li>
                 ))}
             </ul>
