@@ -39,6 +39,21 @@ describe('list', () => {
                 index === 0 && expect(el).contain('head');
                 index === 4 && expect(el).contain('tail');
             });
-    })
+        cy.get('[class*=circle_default]').contains('42');
+    });
+
+    it('should add to tail correctly', () => {
+        cy.get('input').first().type('99');
+        cy.contains('button', 'Добавить в tail').click();
+        cy.get('[class*=circle_modified]').contains('99');
+        cy.wait(DELAY_IN_MS);
+        cy.get('[class*=circle_content]')
+            .should('have.length', 5)
+            .each((el, index) => {
+                index === 4 && expect(el).contain('99');
+                index === 4 && expect(el).contain('tail');
+            });
+        cy.get('[class*=circle_default]').contains('99');
+    });
 
 });
