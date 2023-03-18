@@ -86,6 +86,8 @@ export const ListPage: React.FC = () => {
             setActive(true);
             setIsRemoveFromHead(true);
             setInputValueIdx(0);
+            setTempValue(arrayWithState[0].item);
+            arrayWithState[0].state = ElementStates.Modified;
             arrayWithState[0].item = '';
             setArrayWithState(arrayWithState);
             await delay(SHORT_DELAY_IN_MS);
@@ -104,6 +106,7 @@ export const ListPage: React.FC = () => {
             setIsRemoveFromTail(true);
             setInputValueIdx(list.getSize - 1);
 
+            arrayWithState[arrayWithState.length - 1].state = ElementStates.Modified;
             arrayWithState[arrayWithState.length - 1].item = '';
             setArrayWithState(arrayWithState);
             await delay(SHORT_DELAY_IN_MS);
