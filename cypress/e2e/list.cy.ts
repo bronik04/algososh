@@ -1,5 +1,5 @@
 import {TEST_URL} from '../../src/constants/for-testing';
-import {SHORT_DELAY_IN_MS} from '../../src/constants/delays';
+import {DELAY_IN_MS} from '../../src/constants/delays';
 
 describe('list', () => {
     beforeEach(() => {
@@ -25,5 +25,20 @@ describe('list', () => {
         cy.get('[class*=circle_content]')
             .should('have.length', 4).eq(3)
             .should('contain', 'tail');
+    });
+
+    it('should add to head correctly', () => {
+        cy.get('input').first().type('42');
+        cy.contains('button', 'Добавить в head').click();
+        cy.get('[class*=circle_modified]').contains('42');
+        cy.wait(DELAY_IN_MS);
+        cy.get('[class*=circle_content]')
+            .should('have.length', 5)
+            .each((el, index) => {
+                index === 0 && expect(el).contain('42');
+                index === 0 && expect(el).contain('head');
+                index === 4 && expect(el).contain('tail');
+            });
     })
+
 });
