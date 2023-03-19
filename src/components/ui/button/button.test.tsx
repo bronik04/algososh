@@ -1,6 +1,7 @@
-import { Button } from './button';
+import {Button} from './button';
 import renderer from 'react-test-renderer';
 import {fireEvent, render, screen} from "@testing-library/react";
+import {Direction} from '../../../types/direction';
 
 
 describe('Testing button component', () => {
@@ -22,6 +23,21 @@ describe('Testing button component', () => {
 
     it('button has loading', () => {
         const button = renderer.create(<Button isLoader />).toJSON();
+        expect(button).toMatchSnapshot();
+    });
+
+    it('button has asc', () => {
+        const button = renderer.create(<Button sorting={Direction.Ascending}/>).toJSON();
+        expect(button).toMatchSnapshot();
+    });
+
+    it('button has desc', () => {
+        const button = renderer.create(<Button sorting={Direction.Descending}/>).toJSON();
+        expect(button).toMatchSnapshot();
+    });
+
+    it('button has linkedList', () => {
+        const button = renderer.create(<Button linkedList={"small"}/>).toJSON();
         expect(button).toMatchSnapshot();
     });
 
