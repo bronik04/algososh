@@ -10,6 +10,7 @@ export const bubbleSortAsc = async (
     arr: TArrayItem[],
     setArray: Dispatch<React.SetStateAction<TArrayItem[]>>,
     setActive: Dispatch<SetStateAction<boolean>>) => {
+    if (arr.length < 3) return;
     setActive(true);
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr.length - i - 1; j++) {
@@ -32,6 +33,7 @@ export const bubbleSortDesc = async (
     arr: TArrayItem[],
     setArray: Dispatch<React.SetStateAction<TArrayItem[]>>,
     setActive: Dispatch<SetStateAction<boolean>>) => {
+    if (arr.length < 3) return;
     setActive(true);
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr.length - i - 1; j++) {

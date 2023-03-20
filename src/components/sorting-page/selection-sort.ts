@@ -9,6 +9,7 @@ export const selectionSortAsc = async (
     arr: TArrayItem[],
     setArray: Dispatch<React.SetStateAction<TArrayItem[]>>,
     setActive: Dispatch<SetStateAction<boolean>>) => {
+    if (arr.length < 3) return;
     setActive(true);
     for (let i = 0; i < arr.length - 1; i++) {
         let minIndex = i;
@@ -35,6 +36,8 @@ export const selectionSortDesc = async (
     arr: TArrayItem[],
     setArray: Dispatch<React.SetStateAction<TArrayItem[]>>,
     setActive: Dispatch<SetStateAction<boolean>>) => {
+    if (arr.length < 3) return;
+
     setActive(true);
     for (let i = 0; i < arr.length - 1; i++) {
         let maxIndex = i;
